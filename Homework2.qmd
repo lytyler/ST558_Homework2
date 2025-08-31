@@ -1,0 +1,94 @@
+---
+title: "Programming in Base R"
+author: "Lanette Tyler"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## Task 1: Basic Vector Practice
+
+1.  Create vectors for pre- and post-treatment blood pressure values, and take a look at them:
+
+```{r}
+bp_pre <- c( 120, 151, 125, 126, 115, 132, 132, 129, 134, 139, 127, 122, 127, 135, 133, 128, 147, 138, 140, 132)
+bp_pre
+bp_post <- c(127, 145, 135, 122, 115, 122, 123, 126, 126, 129, 132, 146, 120, 114, 121, 120, 128, 120, 133, 115)
+bp_post
+```
+
+2.  Assign names to the vectors and take a look at the named vectors:
+
+```{r}
+names(bp_pre) <- paste("Subject", 1:20, sep = "_")
+bp_pre
+names(bp_post) <- paste("Subject",1:20, sep = "_")
+bp_post
+```
+
+3.  Calculate the change in blood pressure for each subject, store in a vector and take a look:
+
+```{r}
+bp_change = bp_pre - bp_post
+bp_change
+```
+
+4.  Calculate average decrease in blood pressure for all subjects:
+
+```{r}
+avg_decrease <- mean(bp_change)
+avg_decrease
+```
+
+5.  Determine which subjects experienced a decrease in blood pressure:
+
+```{r}
+which(bp_change > 0)
+```
+
+6.  Subset the vector of differences to only return those that have a positive change:
+
+```{r}
+index_vec <- bp_change > 0
+pos_bp_change <- bp_change[index_vec]
+pos_bp_change
+```
+
+7.  Calculate the average decrease in blood pressure for those where the blood pressure decreased (positive change):
+
+```{r}
+avg_pos_diff <- mean(pos_bp_change)
+avg_pos_diff
+```
+
+## Task 2: Basic Data Frame Practice
+
+1.  Create a data frame object with four columns corresponding to previous data: patient, pre_bp, post_bp, and diff_bp. View data frame.
+
+```{r}
+bp_data <- data.frame(patient = names(bp_pre),pre_bp = bp_pre,post_bp = bp_post,diff_bp = bp_change)
+bp_data
+rownames(bp_data) <- 1:20 # Subect_1 to Subject_20 were the row names as well as the patient values for data frame bp_data after creation, so I changed the rownames to the numbers 1 to 20.
+bp_data
+```
+
+2.  Return only rows of the data frame where the diff_bp column is negative.
+
+```{r}
+index_vec_2 <- bp_data$diff_bp < 0
+bp_data[index_vec_2,] # could also use code: subset(bp_data,bp_data$diff_bp < 0)
+```
+
+3.  Add a new column to the data frame corresponding to TRUE if the post_bp is less than 120 and FALSE if it is not. See results.
+
+```{r}
+bp_data$less_than_120 <- ifelse(bp_data$post_bp < 120,"TRUE","FALSE")
+bp_data
+```
+
+4.  Nice print out of data frame:
+
+```{r}
+knitr::kable(bp_data)
+```
