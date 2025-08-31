@@ -30,7 +30,7 @@ bp_post
 3.  Calculate the change in blood pressure for each subject and store in a **vector**:
 
 ```{r}
-bp_change = bp_pre - bp_post
+bp_change <- bp_pre - bp_post
 bp_change
 ```
 
